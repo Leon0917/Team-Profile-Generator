@@ -4,13 +4,74 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-
+let engineerList = []
+let internList =[]
+let mangerList =[]
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+function displayUserChoice() {
+    inquirer.prompt([
+        {
+            type: "list",
+            name: "menu",
+            message: "Leon's company HR",
+            choices: ["Add Engineer", "Add Intern", "Add Manager", "Exit Application"]
+        }
+    ]).then(function (userChoice) {
+        switch (userChoice.menu) {
+            case "Add Engineer":
+                addEngineer();
+                break;
 
+            case "Add Intern":
+                addIntern();
+                break;
+
+            case "Add Manager":
+                addManager();
+                break;
+
+            case "Exit Apllication":
+                exitApp();
+                break;
+        }
+    })
+}
+
+function addEngineer() {
+    inquirer.prompt([
+        {
+            type:"input",
+            message: "Enter engingeer name",
+            name: "engineerName"
+        },
+
+        {
+            type:"input",
+            message: "Enter engingeer Id",
+            name: "engineerId"
+        },
+
+        {
+            type:"input",
+            message: "Enter engingeer email",
+            name: "engineerEmail"
+        }
+
+        {
+            type:"input",
+            message: "Enter engingeer github",
+            name: "engineerGithub"
+        }
+    ])
+    .then(function(userEntry){
+        let myEngineer = new Manager(userEntry.engineerName, userEntry.engineerId, userEntry.engineerEmail,userEntry.engineerGithub);
+        engineerList.push(myEngineer)
+    })
+}
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
