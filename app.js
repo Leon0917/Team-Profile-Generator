@@ -4,11 +4,9 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
-let engineerList = []
-let internList =[]
-let mangerList =[]
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
+let employeeList = [];
 
 const render = require("./lib/htmlRenderer");
 
@@ -35,43 +33,121 @@ function displayUserChoice() {
                 break;
 
             case "Exit Apllication":
-                exitApp();
+                let htmlString = render(employeeList) // [object, object, object]
+                fs.writeFileSync(outputPath, htmlString)
                 break;
         }
     })
-}
 
 function addEngineer() {
     inquirer.prompt([
         {
-            type:"input",
+            type: "input",
             message: "Enter engingeer name",
             name: "engineerName"
         },
 
         {
-            type:"input",
+            type: "input",
             message: "Enter engingeer Id",
             name: "engineerId"
         },
 
         {
-            type:"input",
+            type: "input",
             message: "Enter engingeer email",
             name: "engineerEmail"
-        }
+        },
 
         {
-            type:"input",
+            type: "input",
             message: "Enter engingeer github",
             name: "engineerGithub"
         }
     ])
-    .then(function(userEntry){
-        let myEngineer = new Manager(userEntry.engineerName, userEntry.engineerId, userEntry.engineerEmail,userEntry.engineerGithub);
-        engineerList.push(myEngineer)
-    })
+        .then(function (userEntry) {
+            let myEngineer = new Engineer(userEntry.engineerName, userEntry.engineerId, userEntry.engineerEmail, userEntry.engineerGithub);
+            employeeList.push(myEngineer)
+        })
+    // fs.writeFileSync("./output/", userChoice)
 }
+
+function addIntern() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter intern name",
+            name: "internName"
+        },
+
+        {
+            type: "input",
+            message: "Enter intern Id",
+            name: "internId"
+        },
+
+        {
+            type: "input",
+            message: "Enter intern email",
+            name: "internEmail"
+        },
+
+        {
+            type: "input",
+            message: "Enter intern github",
+            name: "internSchool"
+        }
+    ])
+        .then(function (userEntry) {
+            let myIntern = new Intern(userEntry.internName, userEntry.internId, userEntry.internEmail, userEntry.internSchool);
+            employeeList.push(myIntern)
+        })
+}
+
+function addManager() {
+    inquirer.prompt([
+        {
+            type: "input",
+            message: "Enter manager name",
+            name: "managerName"
+        },
+
+        {
+            type: "input",
+            message: "Enter manager Id",
+            name: "managerId"
+        },
+
+        {
+            type: "input",
+            message: "Enter manager email",
+            name: "managerEmail"
+        },
+
+        {
+            type: "input",
+            message: "Enter manager office number",
+            name: "managerofficeNumber"
+        }
+    ])
+        .then(function (userEntry) {
+            let myManager = new Manager(userEntry.managerName, userEntry.managerId, userEntry.managerEmail, userEntry.managerOfficeNumber);
+            employeeList.push(myEngineer)
+        })
+}
+
+function teamBuilder(){
+    if(!fs.existsSync(OUTPUT_DIR)){
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+fs.writeFileSync(outputPath, render(employeeList), "utf-8")
+}
+
+}
+displayUserChoice();
+
+
+
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
 
