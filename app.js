@@ -32,118 +32,126 @@ function displayUserChoice() {
                 addManager();
                 break;
 
-            case "Exit Apllication":
-                let htmlString = render(employeeList) // [object, object, object]
-                fs.writeFileSync(outputPath, htmlString)
+            case "Exit Application":
+                exitApplication()
                 break;
         }
     })
-
-function addEngineer() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Enter engingeer name",
-            name: "engineerName"
-        },
-
-        {
-            type: "input",
-            message: "Enter engingeer Id",
-            name: "engineerId"
-        },
-
-        {
-            type: "input",
-            message: "Enter engingeer email",
-            name: "engineerEmail"
-        },
-
-        {
-            type: "input",
-            message: "Enter engingeer github",
-            name: "engineerGithub"
-        }
-    ])
-        .then(function (userEntry) {
-            let myEngineer = new Engineer(userEntry.engineerName, userEntry.engineerId, userEntry.engineerEmail, userEntry.engineerGithub);
-            employeeList.push(myEngineer)
-        })
-    // fs.writeFileSync("./output/", userChoice)
-}
-
-function addIntern() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Enter intern name",
-            name: "internName"
-        },
-
-        {
-            type: "input",
-            message: "Enter intern Id",
-            name: "internId"
-        },
-
-        {
-            type: "input",
-            message: "Enter intern email",
-            name: "internEmail"
-        },
-
-        {
-            type: "input",
-            message: "Enter intern github",
-            name: "internSchool"
-        }
-    ])
-        .then(function (userEntry) {
-            let myIntern = new Intern(userEntry.internName, userEntry.internId, userEntry.internEmail, userEntry.internSchool);
-            employeeList.push(myIntern)
-        })
-}
-
-function addManager() {
-    inquirer.prompt([
-        {
-            type: "input",
-            message: "Enter manager name",
-            name: "managerName"
-        },
-
-        {
-            type: "input",
-            message: "Enter manager Id",
-            name: "managerId"
-        },
-
-        {
-            type: "input",
-            message: "Enter manager email",
-            name: "managerEmail"
-        },
-
-        {
-            type: "input",
-            message: "Enter manager office number",
-            name: "managerofficeNumber"
-        }
-    ])
-        .then(function (userEntry) {
-            let myManager = new Manager(userEntry.managerName, userEntry.managerId, userEntry.managerEmail, userEntry.managerOfficeNumber);
-            employeeList.push(myEngineer)
-        })
-}
-
-function teamBuilder(){
-    if(!fs.existsSync(OUTPUT_DIR)){
-        fs.mkdirSync(OUTPUT_DIR)
+}   
+    async function exitApplication() {
+        console.log(employeeList)
+        let htmlString = await render(employeeList)
+        console.log("HTML STring",htmlString)
+        fs.writeFileSync(outputPath, htmlString)
     }
-fs.writeFileSync(outputPath, render(employeeList), "utf-8")
-}
 
-}
+    function addEngineer() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter engingeer name",
+                name: "engineerName"
+            },
+
+            {
+                type: "input",
+                message: "Enter engingeer Id",
+                name: "engineerId"
+            },
+
+            {
+                type: "input",
+                message: "Enter engingeer email",
+                name: "engineerEmail"
+            },
+
+            {
+                type: "input",
+                message: "Enter engingeer github",
+                name: "engineerGithub"
+            }
+        ])
+            .then(function (userEntry) {
+                let myEngineer = new Engineer(userEntry.engineerName, userEntry.engineerId, userEntry.engineerEmail, userEntry.engineerGithub);
+                employeeList.push(myEngineer)
+                displayUserChoice()
+            })
+    }
+
+    function addIntern() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter intern name",
+                name: "internName"
+            },
+
+            {
+                type: "input",
+                message: "Enter intern Id",
+                name: "internId"
+            },
+
+            {
+                type: "input",
+                message: "Enter intern email",
+                name: "internEmail"
+            },
+
+            {
+                type: "input",
+                message: "Enter intern school",
+                name: "internSchool"
+            }
+        ])
+            .then(function (userEntry) {
+                let myIntern = new Intern(userEntry.internName, userEntry.internId, userEntry.internEmail, userEntry.internSchool);
+                employeeList.push(myIntern)
+                displayUserChoice()
+            })
+    }
+
+    function addManager() {
+        inquirer.prompt([
+            {
+                type: "input",
+                message: "Enter manager name",
+                name: "managerName"
+            },
+
+            {
+                type: "input",
+                message: "Enter manager Id",
+                name: "managerId"
+            },
+
+            {
+                type: "input",
+                message: "Enter manager email",
+                name: "managerEmail"
+            },
+
+            {
+                type: "input",
+                message: "Enter manager office number",
+                name: "managerofficeNumber"
+            }
+        ])
+            .then(function (userEntry) {
+                let myManager = new Manager(userEntry.managerName, userEntry.managerId, userEntry.managerEmail, userEntry.managerOfficeNumber);
+                employeeList.push(myManager)
+                displayUserChoice()
+            })
+    }
+
+    function teamBuilder() {
+        if (!fs.existsSync(OUTPUT_DIR)) {
+            fs.mkdirSync(OUTPUT_DIR)
+        }
+        fs.writeFileSync(outputPath, render(employeeList), "utf-8")
+    }
+
+
 displayUserChoice();
 
 
